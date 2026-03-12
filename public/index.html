@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Inventory Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-a"></div>
+    <div class="bg-orb orb-b"></div>
+
+    <main class="shell">
+      <header class="hero card reveal">
+        <p class="eyebrow">Inventory Dashboard</p>
+        <h1>Product Inventory Management System</h1>
+        <p class="subtitle">
+          Add, track, update, and remove products in real-time using your Node + MongoDB API.
+        </p>
+      </header>
+
+      <section class="grid">
+        <article class="card reveal">
+          <h2>Add Product</h2>
+          <form id="productForm" class="form-grid">
+            <label>
+              Product Name
+              <input type="text" name="productName" required />
+            </label>
+            <label>
+              Product Code
+              <input type="text" name="productCode" required />
+            </label>
+            <label>
+              Category
+              <select name="category">
+                <option>Electronics</option>
+                <option>Clothing</option>
+                <option>Food</option>
+                <option>Furniture</option>
+                <option>Other</option>
+              </select>
+            </label>
+            <label>
+              Supplier Name
+              <input type="text" name="supplierName" />
+            </label>
+            <label>
+              Quantity In Stock
+              <input type="number" name="quantityInStock" min="0" value="0" />
+            </label>
+            <label>
+              Reorder Level
+              <input type="number" name="reorderLevel" min="0" value="0" />
+            </label>
+            <label>
+              Unit Price
+              <input type="number" name="unitPrice" min="0" step="0.01" value="0" />
+            </label>
+            <label>
+              Manufacture Date
+              <input type="date" name="manufactureDate" />
+            </label>
+            <label>
+              Product Type
+              <select name="productType">
+                <option>Perishable</option>
+                <option selected>Non-Perishable</option>
+              </select>
+            </label>
+            <label>
+              Status
+              <select name="status">
+                <option selected>Available</option>
+                <option>Out of Stock</option>
+              </select>
+            </label>
+
+            <button class="btn btn-primary" type="submit">Create Product</button>
+          </form>
+        </article>
+
+        <article class="card reveal">
+          <div class="panel-head">
+            <h2>Products</h2>
+            <button id="refreshBtn" class="btn btn-ghost" type="button">Refresh</button>
+          </div>
+
+          <div class="toolbar">
+            <input id="searchInput" type="text" placeholder="Search by name, code, category" />
+            <select id="sortSelect" aria-label="Sort products">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="name-asc">Name A-Z</option>
+              <option value="name-desc">Name Z-A</option>
+              <option value="price-asc">Price low-high</option>
+              <option value="price-desc">Price high-low</option>
+              <option value="stock-desc">Stock high-low</option>
+              <option value="stock-asc">Stock low-high</option>
+            </select>
+          </div>
+
+          <div class="filters">
+            <div class="chip-group">
+              <p class="chip-title">Category</p>
+              <div id="categoryChips" class="chips"></div>
+            </div>
+            <div class="chip-group">
+              <p class="chip-title">Status</p>
+              <div id="statusChips" class="chips"></div>
+            </div>
+          </div>
+
+          <p id="statusMessage" class="status"></p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Code</th>
+                  <th>Category</th>
+                  <th>Stock</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productTableBody"></tbody>
+            </table>
+          </div>
+
+          <div id="pagination" class="pagination"></div>
+        </article>
+      </section>
+    </main>
+
+    <dialog id="editDialog">
+      <form id="editForm" method="dialog" class="edit-form">
+        <h3>Edit Product</h3>
+        <input type="hidden" name="id" />
+        <label>
+          Product Name
+          <input type="text" name="productName" required />
+        </label>
+        <label>
+          Category
+          <select name="category">
+            <option>Electronics</option>
+            <option>Clothing</option>
+            <option>Food</option>
+            <option>Furniture</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>
+          Quantity
+          <input type="number" name="quantityInStock" min="0" required />
+        </label>
+        <label>
+          Unit Price
+          <input type="number" name="unitPrice" min="0" step="0.01" required />
+        </label>
+        <label>
+          Status
+          <select name="status">
+            <option>Available</option>
+            <option>Out of Stock</option>
+          </select>
+        </label>
+
+        <div class="dialog-actions">
+          <button type="button" id="cancelEdit" class="btn btn-ghost">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
